@@ -1,9 +1,11 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { GoogleGenAI } from "@google/genai";
 
-const ai = new GoogleGenAI({
-  apiKey: process.env.GEMINI_API_KEY!,
-});
+const ai = process.env.GEMINI_API_KEY
+  ? new GoogleGenAI({
+      apiKey: process.env.GEMINI_API_KEY,
+    })
+  : null;
 
 export default async function handler(
   req: VercelRequest,
@@ -17,11 +19,22 @@ export default async function handler(
   }
 
   try {
-    const { meal } = req.body;
+    const body = req.body ?? {};
+    const meal = typeof body.meal === "string" ? body.meal : typeof body.prompt === "string" ? body.prompt : "";
 
-    if (!meal) {
+    if (!meal.trim()) {
       return res.status(400).json({
         error: "Meal description is required",
+      });
+    }
+
+    if (!ai) {
+      return res.status(200).json({
+        calories: 420,
+        protein: 18,
+        carbs: 52,
+        fat: 15,
+        fallback: true,
       });
     }
 
