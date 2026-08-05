@@ -1,0 +1,6 @@
+{
+  "name": "Biteopia — Calorie Tracker",
+  "description": "Editorial high-contrast AI-powered calorie and weight tracker using Gemini to estimate calories from food descriptions.",
+  "requestFramePermissions": ["camera"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
